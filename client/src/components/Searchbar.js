@@ -2,14 +2,12 @@ import React, { useState } from "react";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
 import Container from "@mui/material/Container";
-import { Link, useNavigate } from "react-router-dom";
 
 const Searchbar = (props) => {
   const [keyword, setKeyword] = useState(props.value);
-  const navigate = useNavigate();
 
   return (
-    <Container sx={{ m: 2 }}>
+    <Container maxWidth="lg" sx={{}}>
       <TextField
         label="검색어"
         variant="outlined"
@@ -17,14 +15,16 @@ const Searchbar = (props) => {
           setKeyword(e.target.value);
         }}
         size="small"
-        sx={{ width: "80%", m: 0.5 }}
+        sx={{ width: "72%" }}
         defaultValue={props.value}
+        onKeyDown={() => {
+          window.location.replace(`/search/${keyword}`);
+        }}
       />
       <Button
         variant="contained"
         size="large"
-        margin="normal"
-        sx={{ width: "15%", m: 0.5 }}
+        sx={{ width: "25%", ml: "3%" }}
         onClick={() => {
           window.location.replace(`/search/${keyword}`);
         }}

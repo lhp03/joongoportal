@@ -1,34 +1,44 @@
+import {
+  Backdrop,
+  Box,
+  Button,
+  CircularProgress,
+  Container,
+  Grid,
+} from "@mui/material";
 import React, { useEffect, useState } from "react";
-import Grid from "@mui/material/Grid";
-import { Container } from "@mui/system";
-import { Backdrop, Box, Button, CircularProgress } from "@mui/material";
-import KeyboardDoubleArrowDown from "@mui/icons-material/KeyboardDoubleArrowDown";
-import HelloMarketProductCard from "./HelloMarketProductCard";
+import NaverCafeCard from "./NaverCafeCard";
 import axios from "axios";
+import KeyboardDoubleArrowDown from "@mui/icons-material/KeyboardDoubleArrowDown";
 
-const HelloMarketProductList = (props) => {
+const NaverCafeList = (props) => {
   const search = async (keyword, page) => {
     setProgress(true);
     const response = await axios.get(
-      `/api/searchhellomarket?keyword=${keyword}&page=${page}`
+      `/api/searchnaver?keyword=${keyword}&page=${page}`
     );
     setProgress(false);
-    return response.data.hellomarket;
+    return response.data.naver;
   };
 
   const [progress, setProgress] = useState(false);
-  const [listNum, setListNum] = useState(9);
+  const [listNum, setListNum] = useState(10);
   const [products, setProducts] = useState([]);
   const [page, setPage] = useState(1);
 
   useEffect(() => {
     const loadData = async () => {
-      const list = await search(props.keyword, page);
+      const data = await search(props.keyword, page);
+      console.log(props);
+
+      console.log(data);
+      const list = data.products;
+
+      props.setRecommendKeywords(data.recommendKeywordList);
       setPage(page + 1);
       setProducts([...products, ...list]);
     };
     loadData();
-    console.log(products);
   }, []);
 
   return (
@@ -46,7 +56,7 @@ const HelloMarketProductList = (props) => {
       <Box
         component="img"
         sx={{ mt: 2, height: 50, objectFit: "cover" }}
-        src={process.env.PUBLIC_URL + "/logo_hellomarket.png"}
+        src={process.env.PUBLIC_URL + "/cafe_icon.png"}
       />
       <Backdrop
         sx={{
@@ -62,8 +72,8 @@ const HelloMarketProductList = (props) => {
         {products.map(
           (element, index) =>
             index < listNum && (
-              <Grid key={`hello_product${index}`} item xs={6} lg={4}>
-                <HelloMarketProductCard product={element} />
+              <Grid key={`naver_product${index}`} item xs={12} lg={6}>
+                <NaverCafeCard product={element} />
               </Grid>
             )
         )}
@@ -74,8 +84,8 @@ const HelloMarketProductList = (props) => {
         sx={{ width: "100%" }}
         onClick={async () => {
           if (!progress) {
-            setListNum(listNum + 9);
-            if (products.length - listNum < 9) {
+            setListNum(listNum + 10);
+            if (products.length - listNum < 10) {
               const newProducts = await search(props.keyword, page);
               setProducts([...products, ...newProducts]);
               setPage(page + 1);
@@ -89,4 +99,4 @@ const HelloMarketProductList = (props) => {
   );
 };
 
-export default HelloMarketProductList;
+export default NaverCafeList;

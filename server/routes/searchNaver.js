@@ -4,13 +4,10 @@ let search = require("../module/searchModule");
 
 /* GET users listing. */
 router.get("/", async function (req, res, next) {
-  const joongonara = await search.getJoonggoNara(
-    req.query.keyword,
-    req.query.page
-  );
+  const naver = await search.getNaver(req.query.keyword, req.query.page);
 
   const result = {
-    joongonara: joongonara,
+    naver: naver,
   };
   res.send(result);
 });

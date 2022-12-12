@@ -42,7 +42,7 @@ const CafeProductList = (props) => {
 
   return (
     <Container align="center" maxWidth="lg" sx={{ mt: 3, mb: 3 }}>
-      <TableContainer component={Paper}>
+      <TableContainer component={Paper} sx={{ width: "auto" }}>
         <Table
           sx={{ minWidth: 650, textOverflow: "ellipsis" }}
           aria-label="caption table"

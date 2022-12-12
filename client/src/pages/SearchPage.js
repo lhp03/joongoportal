@@ -1,28 +1,26 @@
-import { Container } from "@mui/material";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { useParams } from "react-router-dom";
-import CafeProductList from "../components/CafeProductList";
 import Searchbar from "../components/Searchbar";
-import BunjangProductList from "../components/BunjangProductList";
 import HelloMarketProductList from "../components/HelloMarketProductList";
+import BunjangProductList from "../components/BunjangProductList";
+import NaverCafeList from "../components/NaverCafeList";
+import RecommendKeyowordList from "../components/RecommendKeyowordList";
 
 const SearchPage = () => {
   const { keyword } = useParams();
-  console.log(keyword);
+  const [recommendKeywords, setRecommendKeywords] = useState([]);
 
   return (
-    <Container align="center" sx={{ m: 2 }}>
+    <div>
       <Searchbar value={keyword} />
-      <Container maxWidth="lg">
-        <CafeProductList keyword={keyword}></CafeProductList>
-      </Container>
-      <Container maxWidth="lg">
-        <BunjangProductList keyword={keyword}></BunjangProductList>
-      </Container>
-      <Container maxWidth="lg">
-        <HelloMarketProductList keyword={keyword}></HelloMarketProductList>
-      </Container>
-    </Container>
+      <RecommendKeyowordList recommendKeyowrdList={recommendKeywords} />
+      <NaverCafeList
+        keyword={keyword}
+        setRecommendKeywords={setRecommendKeywords}
+      ></NaverCafeList>
+      <BunjangProductList keyword={keyword}></BunjangProductList>
+      <HelloMarketProductList keyword={keyword}></HelloMarketProductList>
+    </div>
   );
 };
 

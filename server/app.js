@@ -10,6 +10,7 @@ var searchRouter = require("./routes/search");
 var searchJoongonaraRouter = require("./routes/searchJoonggonara");
 var searchBunjangRouter = require("./routes/searchbunjang");
 var searchHelloMarketRouter = require("./routes/searchhello");
+var searchNaverRouter = require("./routes/searchNaver");
 
 var app = express();
 
@@ -24,6 +25,7 @@ app.use("/api/search", searchRouter);
 app.use("/api/searchjoonggonara", searchJoongonaraRouter);
 app.use("/api/searchbunjang", searchBunjangRouter);
 app.use("/api/searchhellomarket", searchHelloMarketRouter);
+app.use("/api/searchnaver", searchNaverRouter);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {

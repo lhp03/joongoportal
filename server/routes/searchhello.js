@@ -4,8 +4,6 @@ let search = require("../module/searchModule");
 
 /* GET users listing. */
 router.get("/", async function (req, res, next) {
-  console.log(req.query.keyword);
-  console.log(req.query.page);
   const hellomarket = await search.getHelloMarket(
     req.query.keyword,
     req.query.page

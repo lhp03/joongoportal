@@ -109,6 +109,7 @@ const getHelloMarket = async (keyword, page = 1) => {
       price: element.item.property.price.amount,
       status: element.item.property.sellState.name,
       usedType: element.item.property.usedType.name,
+      link: `${base_url}/item/${element.item.itemIdx}`,
       timeago: element.item.timeago,
     };
     product_list.push(product_obj);
@@ -154,8 +155,27 @@ const getJoonggoNara = async (keyword, page = 1) => {
   return result_arr;
 };
 
+const getNaver = async (keyword, page = 1) => {
+  keyword = encodeURI(keyword);
+  const api_url = `https://apis.naver.com/cafe-web/cafe-search-api/v4.0/trade-search/all?query=${keyword}&page=${page}&size=100&recommendKeyword=true&searchOrderParamType=DEFAULT`;
+
+  const response = await axios.get(api_url, {
+    headers: {
+      "User-Agent": "Mozilla/5.0",
+      Accept: "application/json",
+      "Accept-Encoding": "identity",
+    },
+  });
+
+  return {
+    recommendKeywordList: response.data.result.recommendKeywordList,
+    products: response.data.result.tradeArticleList,
+  };
+};
+
 module.exports = {
   getBunjang,
   getHelloMarket,
   getJoonggoNara,
+  getNaver,
 };
