@@ -1,7 +1,7 @@
 {
   "scripts": {
     "server": "cd server && npm start",
-    "client": "cd client && npx serve -l 80 -s build",
+    "client": "cd client && npx serve -s build",
     "start": "concurrently --kill-others-on-fail \"npm run server\" \"npm run client\""
   },
   "dependencies": {
