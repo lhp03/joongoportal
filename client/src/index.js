@@ -4,7 +4,6 @@ import App from "./App";
 import { BrowserRouter } from "react-router-dom";
 import reportWebVitals from "./reportWebVitals";
 import ReactGA from "react-ga";
-import { hydrate, render } from "react-dom";
 
 if (process.env.REACT_APP_GOOGLE_ANALYTICS) {
   console.log("HIHI");
