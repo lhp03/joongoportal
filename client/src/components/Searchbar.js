@@ -17,8 +17,10 @@ const Searchbar = (props) => {
         size="small"
         sx={{ width: "72%" }}
         defaultValue={props.value}
-        onKeyDown={() => {
-          window.location.replace(`/search/${keyword}`);
+        onKeyDown={(e) => {
+          if (e.key === "Enter") {
+            window.location.replace(`/search/${keyword}`);
+          }
         }}
       />
       <Button

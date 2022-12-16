@@ -1,7 +1,13 @@
 import React, { useEffect, useState } from "react";
 import Grid from "@mui/material/Grid";
 import { Container } from "@mui/system";
-import { Backdrop, Box, Button, CircularProgress } from "@mui/material";
+import {
+  Backdrop,
+  Box,
+  Button,
+  CircularProgress,
+  Typography,
+} from "@mui/material";
 import KeyboardDoubleArrowDown from "@mui/icons-material/KeyboardDoubleArrowDown";
 import HelloMarketProductCard from "./HelloMarketProductCard";
 import axios from "axios";
@@ -20,6 +26,7 @@ const HelloMarketProductList = (props) => {
   const [listNum, setListNum] = useState(9);
   const [products, setProducts] = useState([]);
   const [page, setPage] = useState(1);
+  const [btnAble, setBtnAble] = useState(true);
 
   useEffect(() => {
     const loadData = async () => {
@@ -28,7 +35,6 @@ const HelloMarketProductList = (props) => {
       setProducts([...products, ...list]);
     };
     loadData();
-    console.log(products);
   }, []);
 
   return (
@@ -59,26 +65,42 @@ const HelloMarketProductList = (props) => {
         <CircularProgress sx={{ color: "#e0e0e0" }} />
       </Backdrop>
       <Grid container sx={{ display: "flex" }}>
-        {products.map(
-          (element, index) =>
-            index < listNum && (
-              <Grid key={`hello_product${index}`} item xs={6} lg={4}>
-                <HelloMarketProductCard product={element} />
-              </Grid>
-            )
+        {products.length > 0 ? (
+          products.map(
+            (element, index) =>
+              index < listNum && (
+                <Grid key={`hello_product${index}`} item xs={6} lg={4}>
+                  <HelloMarketProductCard product={element} />
+                </Grid>
+              )
+          )
+        ) : (
+          <Box sx={{ my: 3, width: "100%" }}>
+            <Typography align="center" color={"gray"}>
+              검색결과가 없습니다
+            </Typography>
+            <Typography align="center" color={"gray"}>
+              다른 검색어를 입력해주세요.
+            </Typography>
+          </Box>
         )}
       </Grid>
       <Button
         size="large"
         color="inherit"
         sx={{ width: "100%" }}
+        disabled={!btnAble}
         onClick={async () => {
           if (!progress) {
             setListNum(listNum + 9);
             if (products.length - listNum < 9) {
               const newProducts = await search(props.keyword, page);
-              setProducts([...products, ...newProducts]);
-              setPage(page + 1);
+              if (newProducts.length == 0) {
+                setBtnAble(false);
+              } else {
+                setProducts([...products, ...newProducts]);
+                setPage(page + 1);
+              }
             }
           }
         }}

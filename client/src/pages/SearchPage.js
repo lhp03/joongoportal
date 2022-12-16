@@ -13,7 +13,9 @@ const SearchPage = () => {
   return (
     <div>
       <Searchbar value={keyword} />
-      <RecommendKeyowordList recommendKeyowrdList={recommendKeywords} />
+      {recommendKeywords && recommendKeywords.length > 0 && (
+        <RecommendKeyowordList recommendKeywordList={recommendKeywords} />
+      )}
       <NaverCafeList
         keyword={keyword}
         setRecommendKeywords={setRecommendKeywords}

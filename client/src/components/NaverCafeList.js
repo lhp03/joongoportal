@@ -5,6 +5,7 @@ import {
   CircularProgress,
   Container,
   Grid,
+  Typography,
 } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import NaverCafeCard from "./NaverCafeCard";
@@ -25,13 +26,11 @@ const NaverCafeList = (props) => {
   const [listNum, setListNum] = useState(10);
   const [products, setProducts] = useState([]);
   const [page, setPage] = useState(1);
+  const [btnAble, setBtnAble] = useState(true);
 
   useEffect(() => {
     const loadData = async () => {
       const data = await search(props.keyword, page);
-      console.log(props);
-
-      console.log(data);
       const list = data.products;
 
       props.setRecommendKeywords(data.recommendKeywordList);
@@ -69,26 +68,43 @@ const NaverCafeList = (props) => {
         <CircularProgress sx={{ color: "#e0e0e0" }} />
       </Backdrop>
       <Grid container sx={{ display: "flex" }}>
-        {products.map(
-          (element, index) =>
-            index < listNum && (
-              <Grid key={`naver_product${index}`} item xs={12} lg={6}>
-                <NaverCafeCard product={element} />
-              </Grid>
-            )
+        {products.length > 0 ? (
+          products.map(
+            (element, index) =>
+              index < listNum && (
+                <Grid key={`naver_product${index}`} item xs={12} lg={6}>
+                  <NaverCafeCard product={element} />
+                </Grid>
+              )
+          )
+        ) : (
+          <Box sx={{ my: 3, width: "100%" }}>
+            <Typography align="center" color={"gray"}>
+              검색결과가 없습니다
+            </Typography>
+            <Typography align="center" color={"gray"}>
+              다른 검색어를 입력해주세요.
+            </Typography>
+          </Box>
         )}
       </Grid>
       <Button
         size="large"
         color="inherit"
         sx={{ width: "100%" }}
+        disabled={!btnAble}
         onClick={async () => {
           if (!progress) {
             setListNum(listNum + 10);
             if (products.length - listNum < 10) {
-              const newProducts = await search(props.keyword, page);
-              setProducts([...products, ...newProducts]);
-              setPage(page + 1);
+              const newProducts = (await search(props.keyword, page)).products;
+
+              if (newProducts.length == 0) {
+                setBtnAble(false);
+              } else {
+                setProducts([...products, ...newProducts]);
+                setPage(page + 1);
+              }
             }
           }
         }}

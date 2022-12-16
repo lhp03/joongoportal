@@ -5,7 +5,7 @@ import { Container } from "@mui/system";
 import React, { useState } from "react";
 
 const RecommendKeyowordList = (props) => {
-  const [num, setNum] = useState(6);
+  const [num, setNum] = useState(5);
 
   return (
     <Container
@@ -20,7 +20,7 @@ const RecommendKeyowordList = (props) => {
         py: 1,
       }}
     >
-      {props.recommendKeyowrdList.map(
+      {props.recommendKeywordList.map(
         (element, index) =>
           index < num && (
             <Box
@@ -50,26 +50,27 @@ const RecommendKeyowordList = (props) => {
             </Box>
           )
       )}
-      <Button
-        fullWidth
-        color="inherit"
-        sx={{ mt: 2 }}
-        onClick={() => {
-          if (num === 6) {
-            setNum(20);
-          } else {
-            setNum(6);
-          }
-        }}
-      >
-        {num === 6 ? (
-          <KeyboardDoubleArrowDown fontSize="small" />
-        ) : (
-          <KeyboardDoubbleArrowUp fontSize="small" />
-        )}
-      </Button>
+      {props.recommendKeywordList.length > 5 && (
+        <Button
+          fullWidth
+          color="inherit"
+          sx={{ mt: 2 }}
+          onClick={() => {
+            if (num === 5) {
+              setNum(20);
+            } else {
+              setNum(5);
+            }
+          }}
+        >
+          {num === 5 ? (
+            <KeyboardDoubleArrowDown fontSize="small" />
+          ) : (
+            <KeyboardDoubbleArrowUp fontSize="small" />
+          )}
+        </Button>
+      )}
     </Container>
   );
 };
-
 export default RecommendKeyowordList;

@@ -5,6 +5,7 @@ import {
   CircularProgress,
   Container,
   Grid,
+  Typography,
 } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import BunjangProductCard from "./BunjangProductCard";
@@ -25,6 +26,7 @@ const TestBunjangProductList = (props) => {
   const [listNum, setListNum] = useState(9);
   const [products, setProducts] = useState([]);
   const [page, setPage] = useState(0);
+  const [btnAble, setBtnAble] = useState(true);
 
   useEffect(() => {
     const loadData = async () => {
@@ -63,26 +65,42 @@ const TestBunjangProductList = (props) => {
         <CircularProgress sx={{ color: "#e0e0e0" }} />
       </Backdrop>
       <Grid container sx={{ display: "flex" }}>
-        {products.map(
-          (element, index) =>
-            index < listNum && (
-              <Grid key={`bunjang_product${index}`} item xs={6} lg={4}>
-                <BunjangProductCard product={element} />
-              </Grid>
-            )
+        {products.length > 0 ? (
+          products.map(
+            (element, index) =>
+              index < listNum && (
+                <Grid key={`bunjang_product${index}`} item xs={6} lg={4}>
+                  <BunjangProductCard product={element} />
+                </Grid>
+              )
+          )
+        ) : (
+          <Box sx={{ my: 3, width: "100%" }}>
+            <Typography align="center" color={"gray"}>
+              검색결과가 없습니다
+            </Typography>
+            <Typography align="center" color={"gray"}>
+              다른 검색어를 입력해주세요.
+            </Typography>
+          </Box>
         )}
       </Grid>
       <Button
         size="large"
         color="inherit"
         sx={{ width: "100%" }}
+        disabled={!btnAble}
         onClick={async () => {
           if (!progress) {
             setListNum(listNum + 9);
             if (products.length - listNum < 9) {
               const newProducts = await search(props.keyword, page);
-              setProducts([...products, ...newProducts]);
-              setPage(page + 1);
+              if (newProducts.length == 0) {
+                setBtnAble(false);
+              } else {
+                setProducts([...products, ...newProducts]);
+                setPage(page + 1);
+              }
             }
           }
         }}
