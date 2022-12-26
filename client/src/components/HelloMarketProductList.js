@@ -16,7 +16,7 @@ const HelloMarketProductList = (props) => {
   const search = async (keyword, page) => {
     setProgress(true);
     const response = await axios.get(
-      `/api/searchhellomarket?keyword=${keyword}&page=${page}`
+      `http://localhost:5000/api/searchhellomarket?keyword=${keyword}&page=${page}`
     );
     setProgress(false);
     return response.data.hellomarket;
@@ -95,7 +95,7 @@ const HelloMarketProductList = (props) => {
             setListNum(listNum + 9);
             if (products.length - listNum < 9) {
               const newProducts = await search(props.keyword, page);
-              if (newProducts.length == 0) {
+              if (newProducts.length === 0) {
                 setBtnAble(false);
               } else {
                 setProducts([...products, ...newProducts]);

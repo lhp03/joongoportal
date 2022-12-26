@@ -2,7 +2,9 @@
   "scripts": {
     "server": "cd server && npm start",
     "client": "cd client && npx serve -l 80 -s build",
-    "start": "concurrently --kill-others-on-fail \"npm run server\" \"npm run client\""
+    "client_dev": "cd client && npm start",
+    "start": "concurrently --kill-others-on-fail \"npm run server\" \"npm run client\"",
+    "dev": "concurrently --kill-others-on-fail \"npm run server\" \"npm run client_dev\""
   },
   "dependencies": {
     "concurrently": "^7.6.0",

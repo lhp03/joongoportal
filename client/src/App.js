@@ -1,15 +1,24 @@
+import { createTheme, ThemeProvider } from "@mui/material";
 import { Route, Routes } from "react-router-dom";
 import VisitTracker from "./components/VisitTracker";
 import MainPage from "./pages/MainPage";
 import SearchPage from "./pages/SearchPage";
+import "./App.css";
 
 function App() {
+  const theme = createTheme({
+    typography: {
+      fontFamily: "Spoqa Han Sans Neo",
+    },
+  });
   VisitTracker();
   return (
-    <Routes>
-      <Route path="/" element={<MainPage />} />
-      <Route path="/search/:keyword" element={<SearchPage />} />
-    </Routes>
+    <ThemeProvider theme={theme}>
+      <Routes>
+        <Route path="/" element={<MainPage />} />
+        <Route path="/search/:keyword" element={<SearchPage />} />
+      </Routes>
+    </ThemeProvider>
   );
 }
 

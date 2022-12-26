@@ -1,23 +1,13 @@
-import { Typography } from "@mui/material";
-import { Container } from "@mui/system";
+import { Container } from "@mui/material";
 import React from "react";
+import Feed from "../components/Feed";
 import Searchbar from "../components/Searchbar";
-import SearchIcon from "@mui/icons-material/Search";
 
 const MainPage = () => {
   return (
     <Container align="center">
       <Searchbar />
-      <Container sx={{ my: 5 }}>
-        <SearchIcon sx={{ fontSize: 200, color: "lightgray" }} />
-        <Typography
-          align="center"
-          variant="h3"
-          sx={{ color: "lightgray", fontWeight: "bold" }}
-        >
-          중고 상품을 통합 검색해보세요.
-        </Typography>
-      </Container>
+      <Feed />
     </Container>
   );
 };

@@ -7,7 +7,7 @@ const Searchbar = (props) => {
   const [keyword, setKeyword] = useState(props.value);
 
   return (
-    <Container maxWidth="lg" sx={{}}>
+    <Container maxWidth="lg" sx={{ mt: 7 }}>
       <TextField
         label="검색어"
         variant="outlined"

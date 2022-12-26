@@ -17,7 +17,6 @@ const VisitTracker = () => {
       ReactGA.pageview(location.pathname + location.search);
     }
   }, [initialize, location]);
-  return <div></div>;
 };
 
 export default VisitTracker;
