@@ -16,7 +16,7 @@ const TestBunjangProductList = (props) => {
   const search = async (keyword, page) => {
     setProgress(true);
     const response = await axios.get(
-      `http://localhost:5000/api/searchbunjang?keyword=${keyword}&page=${page}`
+      `/api/searchbunjang?keyword=${keyword}&page=${page}`
     );
     setProgress(false);
     return response.data.bunjang;

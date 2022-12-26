@@ -16,7 +16,7 @@ const NaverCafeList = (props) => {
   const search = async (keyword, page) => {
     setProgress(true);
     const response = await axios.get(
-      `http://localhost:5000/api/searchnaver?keyword=${keyword}&page=${page}`
+      `/api/searchnaver?keyword=${keyword}&page=${page}`
     );
     setProgress(false);
     return response.data.naver;

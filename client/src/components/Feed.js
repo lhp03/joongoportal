@@ -8,7 +8,7 @@ const Feed = () => {
 
   useEffect(() => {
     const loadData = async () => {
-      const response = await axios.get("http://localhost:5000/api/feed");
+      const response = await axios.get("/api/feed");
       const list = response.data.feed;
       setProducts((prevProducts) => [...prevProducts, ...list]);
     };
