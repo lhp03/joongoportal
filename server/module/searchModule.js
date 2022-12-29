@@ -2,53 +2,6 @@ const axios = require("axios");
 const cheerio = require("cheerio");
 const iconv = require("iconv-lite");
 
-const getUtf8Query = (query) => {
-  let buf = iconv.encode(query, "euc-kr");
-  let encodeStr = "";
-
-  for (let i = 0; i < buf.length; i++) {
-    encodeStr += "%" + buf[i].toString("16");
-  }
-
-  encodeStr = encodeStr.toUpperCase();
-
-  return encodeStr;
-};
-
-const getListInNaver = async (clubid, keyword, menuid = "") => {
-  let display = 50;
-  let page = 1;
-  keyword = getUtf8Query(keyword);
-
-  const base_url = "https://cafe.naver.com";
-  const url = `https://cafe.naver.com/ArticleSearchList.nhn?search.clubid=${clubid}&search.menuid=${menuid}&search.searchdate=all&search.searchBy=1&search.sortBy=date&search.option=0&userDisplay=${display}&search.query=${keyword}&search.includeAll=&search.exclude=&search.include=&search.exact=&search.page=${page}`;
-
-  const response = await axios.get(url, {
-    header: { "User-Agent": "Mozilla/5.0", accept: "text/html" },
-    responseType: "arraybuffer",
-    responseEncoding: "binary",
-  });
-
-  const content = iconv.decode(response.data, "CP949");
-  const $ = cheerio.load(content);
-  let result_arr = [];
-
-  $("a.article").map((i, element) => {
-    let obj = {
-      title: $(element)
-        .text()
-        .trim()
-        .replaceAll("\n", " ")
-        .replace(/\s{2,}/gi, " "),
-      link: base_url + $(element).attr("href"),
-    };
-
-    result_arr.push(obj);
-  });
-
-  return result_arr;
-};
-
 const getRequestId = () => {
   const date = new Date();
 
@@ -69,27 +22,42 @@ const getBunjang = async (keyword, page = 0) => {
 
   const request_id = getRequestId();
 
-  const search_url = `https://api.bunjang.co.kr/api/1/find_v2.json?q=${keyword}&order=score&page=${page}&request_id=${request_id}&stat_device=w&n=100&stat_category_required=1&req_ref=search&version=4`;
+  const search_url = `https://api.bunjang.co.kr/api/1/find_v2.json?q=${keyword}&order=score&page=${page}&request_id=${request_id}&stat_device=w&n=30&stat_category_required=1&req_ref=search&version=4`;
   const response = await axios.get(search_url);
 
-  let product_list = [];
+  let products = [];
+  //state: 0: 판매중, 1: 예약완료 3: 판매완료
+  //used: 1: 중고 2: 새상품 13: 중고
 
   response.data.list.map((element) => {
     if (element.ad) return true;
-    let product_obj = {
-      title: element.name,
-      location: element.location,
-      product_image: element.product_image,
-      price: element.price,
-      link: `https://m.bunjang.co.kr/products/${element.pid}`,
-      update_time: element.update_time,
-      tag: element.tag,
-    };
 
-    product_list.push(product_obj);
+    products.push({
+      from: "BJ",
+      url: `https://m.bunjang.co.kr/products/${element.pid}`,
+      img_url: element.product_image,
+      title: element.name,
+      date: element.update_time * 1000,
+      price: element.price,
+      state:
+        element.status === "0"
+          ? "ON_SALE"
+          : element.status === "1"
+          ? "RESERVED"
+          : element.status === "3"
+          ? "COMPLETED"
+          : undefined,
+      used:
+        element.used === 1 || element.used === 13
+          ? "NEW"
+          : element.used === 2
+          ? "USED"
+          : undefined,
+      tag: element.tag,
+    });
   });
 
-  return product_list;
+  return products;
 };
 
 const getHelloMarket = async (keyword, page = 1) => {
@@ -99,65 +67,41 @@ const getHelloMarket = async (keyword, page = 1) => {
   const search_url = `${base_url}/api/search/items?q=${keyword}&page=${page}&startTime=${new Date().valueOf()}`;
   const response = await axios.get(search_url);
 
-  let product_list = [];
+  let products = [];
+
+  //state: ForSale: 판매중
+  //used: SecondHand : 사용감이 있는 깨끗한 상품, AsNew: 거의 새상품, NotUsed 새 상품(미개봉), SomeFlaws: 사용흔적이 많이 있는 상품
 
   response.data.list.map((element) => {
-    let product_obj = {
-      id: element.item.itemIdx,
+    products.push({
+      from: "HM",
+      url: `https://www.hellomarket.com/item/${element.item.itemIdx}`,
+      img_url: element.item.media.imageUrl,
       title: element.item.title,
-      product_image: element.item.media.imageUrl,
+      date: element.item.timestamp,
       price: element.item.property.price.amount,
-      status: element.item.property.sellState.name,
-      usedType: element.item.property.usedType.name,
-      link: `${base_url}/item/${element.item.itemIdx}`,
-      timeago: element.item.timeago,
-    };
-    product_list.push(product_obj);
+      state:
+        element.item.property.sellState.code === "ForSale"
+          ? "ON_SALE"
+          : undefined,
+      used:
+        element.item.property.usedType.code === "NotUsed"
+          ? "NEW"
+          : element.item.property.usedType.code === "AsNew"
+          ? "ALMOST_NEW"
+          : element.item.property.usedType.code === "Secondhand" ||
+            element.item.property.usedType.code === "SomeFlaws"
+          ? "USED"
+          : undefined,
+    });
   });
 
-  return product_list;
-};
-
-const getJoonggoNara = async (keyword, page = 1) => {
-  let display = 50;
-  keyword = getUtf8Query(keyword);
-
-  const base_url = "https://cafe.naver.com";
-  const url = `https://cafe.naver.com/ArticleSearchList.nhn?search.clubid=10050146&search.searchdate=all&search.searchBy=1&search.sortBy=date&search.option=0&userDisplay=${display}&search.query=${keyword}&search.includeAll=&search.exclude=&search.include=&search.exact=&search.page=${page}`;
-
-  const response = await axios.get(url, {
-    header: { "User-Agent": "Mozilla/5.0", accept: "text/html" },
-    responseType: "arraybuffer",
-    responseEncoding: "binary",
-  });
-
-  const content = iconv.decode(response.data, "CP949");
-  const $ = cheerio.load(content);
-  let result_arr = [];
-
-  $("table tbody tr").map((i, element) => {
-    if ($(element).find("a.article") == "") return;
-    let obj = {
-      title: $(element)
-        .find("a.article")
-        .text()
-        .trim()
-        .replaceAll("\n", " ")
-        .replace(/\s{2,}/gi, " "),
-      link: base_url + $(element).find("a.article").attr("href"),
-      date: $(element).find("td.td_date").text(),
-      view: $(element).find("td.td_view").text(),
-    };
-
-    result_arr.push(obj);
-  });
-
-  return result_arr;
+  return products;
 };
 
 const getNaver = async (keyword, page = 1) => {
   keyword = encodeURI(keyword);
-  const api_url = `https://apis.naver.com/cafe-web/cafe-search-api/v4.0/trade-search/all?query=${keyword}&page=${page}&size=100&recommendKeyword=true&searchOrderParamType=DEFAULT`;
+  const api_url = `https://apis.naver.com/cafe-web/cafe-search-api/v4.0/trade-search/all?query=${keyword}&page=${page}&size=30&recommendKeyword=true&searchOrderParamType=DEFAULT`;
 
   const response = await axios.get(api_url, {
     headers: {
@@ -167,85 +111,34 @@ const getNaver = async (keyword, page = 1) => {
     },
   });
 
+  let products = [];
+  let keywords = response.data.result.recommendKeywordList;
+
+  response.data.result.tradeArticleList.map((product, index) => {
+    products.push({
+      from: "NC",
+      url: `https://cafe.naver.com/${product.item.cafeUrl}/${product.item.articleId}`,
+      cafe_icon: product.item.cafeThumbnailImageUrl,
+      cafe_name: product.item.cafeName,
+      img_url: product.item.thumbnailImageUrl,
+      title: product.item.subject,
+      date: product.item.writeTime,
+      price: product.item.productSale.cost,
+      state: product.item.productSale.saleStatus,
+      used: product.item.productSale.productCondition,
+      product_name: product.item.productSale.productName,
+      content: product.item.content,
+    });
+  });
+
   return {
-    recommendKeywordList: response.data.result.recommendKeywordList,
-    products: response.data.result.tradeArticleList,
+    recommendKeywordList: keywords,
+    products: products,
   };
-};
-
-const getFeedJoongna = async () => {
-  const api_url =
-    "https://search-api.joongna.com/v25/main/search/cool/product?maxProductNum=50";
-  const response = await axios.get(api_url);
-
-  const products = [];
-
-  response.data.data.items.map((item) => {
-    products.push({
-      from: "JN",
-      url: `https://web.joongna.com/product/${item.seq}`,
-      img_url: `https://img2.joongna.com${item.url}`,
-      title: item.title,
-      date: new Date(item.sortDate).getTime(),
-      price: item.price,
-      state: item.state,
-    });
-  });
-  return products;
-};
-
-const getFeedBunjang = async () => {
-  const api_url =
-    "https://api.bunjang.co.kr/api/rec/v1/products/personalized/main?page=0&size=100";
-  const response = await axios.get(api_url);
-
-  const products = [];
-
-  response.data.data.map((item) => {
-    if (item.isAd) return true;
-    products.push({
-      from: "BJ",
-      url: `https://m.bunjang.co.kr/${item.pid}`,
-      img_url: `${item.productImage}`,
-      title: item.productName,
-      date: new Date(item.updatedAt).getTime(),
-      price: item.price,
-      state: item.status,
-    });
-  });
-
-  return products;
-};
-
-const getFeedHelloMarket = async () => {
-  const api_url =
-    "https://www.hellomarket.com/api/feature/feeds?page=1&limit=50";
-  const response = await axios.get(api_url);
-
-  const products = [];
-
-  response.data.data.homeFeedData.list.map((item) => {
-    if (item.type === "ad") return true;
-    products.push({
-      from: "HM",
-      url: `https://www.hellomarket.com/item/${item.item.itemIdx}`,
-      img_url: item.item.media.imageUrl,
-      title: item.item.title,
-      date: item.item.timestamp,
-      price: item.item.price,
-      state: item.item.status,
-    });
-  });
-
-  return products;
 };
 
 module.exports = {
   getBunjang,
   getHelloMarket,
-  getJoonggoNara,
   getNaver,
-  getFeedBunjang,
-  getFeedHelloMarket,
-  getFeedJoongna,
 };

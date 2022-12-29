@@ -1,5 +1,3 @@
-import KeyboardDoubleArrowDown from "@mui/icons-material/KeyboardDoubleArrowDown";
-import KeyboardDoubbleArrowUp from "@mui/icons-material/KeyboardDoubleArrowUp";
 import { Box, Button, Divider, Typography } from "@mui/material";
 import { Container } from "@mui/system";
 import React, { useState } from "react";
@@ -9,21 +7,17 @@ const RecommendKeyowordList = (props) => {
 
   return (
     <>
-      <Container sx={{ mt: 1, p: 0 }}>
+      <Container sx={{ mt: 3 }}>
         <Typography align="left" variant="h5" fontWeight="bold">
           연관 검색어
         </Typography>
+        <Divider sx={{ my: 2 }} />
       </Container>
       <Container
         sx={{
-          marginY: 2,
-          border: 1,
-          borderRadius: "20px",
-          borderColor: "lightgray",
           position: "relative",
           display: "flex",
           flexWrap: "wrap",
-          py: 1,
         }}
       >
         {props.recommendKeywordList.map(
@@ -69,11 +63,7 @@ const RecommendKeyowordList = (props) => {
               }
             }}
           >
-            {num === 5 ? (
-              <KeyboardDoubleArrowDown fontSize="small" />
-            ) : (
-              <KeyboardDoubbleArrowUp fontSize="small" />
-            )}
+            {num === 5 ? "더보기" : "접기"}
           </Button>
         )}
       </Container>

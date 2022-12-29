@@ -7,11 +7,14 @@ var cors = require("cors");
 
 //router
 var searchRouter = require("./routes/search");
+var feedRouter = require("./routes/feed");
+
+/*
 var searchJoongonaraRouter = require("./routes/searchJoonggonara");
 var searchBunjangRouter = require("./routes/searchbunjang");
 var searchHelloMarketRouter = require("./routes/searchhello");
 var searchNaverRouter = require("./routes/searchNaver");
-var feedRouter = require("./routes/feed");
+*/
 
 var app = express();
 
@@ -23,10 +26,6 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, "public")));
 
 app.use("/api/search", searchRouter);
-app.use("/api/searchjoonggonara", searchJoongonaraRouter);
-app.use("/api/searchbunjang", searchBunjangRouter);
-app.use("/api/searchhellomarket", searchHelloMarketRouter);
-app.use("/api/searchnaver", searchNaverRouter);
 app.use("/api/feed", feedRouter);
 
 // catch 404 and forward to error handler

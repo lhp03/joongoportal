@@ -44,9 +44,10 @@ const ProductCard = (props) => {
       onClick={() => window.open(props.item.url)}
     >
       <CardMedia
+        referrerPolicy="no-referrer"
         component="img"
-        height="280"
-        width="280"
+        height="180"
+        width="180"
         image={
           props.item ? (
             props.item.img_url
@@ -57,10 +58,12 @@ const ProductCard = (props) => {
       ></CardMedia>
       <CardContent sx={{ p: 0, py: 1 }}>
         <Stack direction="row" spacing={1} my={1}>
-          {props.item.state === 0 || props.item.state === undefined ? (
-            <Chip label="판매중" color="success" size="small" />
-          ) : (
+          {props.item.state === "RESERVED" ? (
+            <Chip label="예약중" color="warning" size="small" />
+          ) : props.item.state === "COMPLETED" ? (
             <Chip label="판매완료" color="error" size="small" />
+          ) : (
+            <Chip label="판매중" color="success" size="small" />
           )}
         </Stack>
         <Typography noWrap align="left" variant="body1">
@@ -74,6 +77,8 @@ const ProductCard = (props) => {
         </Typography>
         <Stack direction="row" spacing={1}>
           <Avatar
+            rel="no-referrer"
+            referrerPolicy="no-referrer"
             src={
               props.item.from === "BJ"
                 ? "/images/bj_icon.svg"
@@ -81,7 +86,9 @@ const ProductCard = (props) => {
                 ? "/images/jn_icon.ico"
                 : props.item.from === "HM"
                 ? "/images/hm_icon.png"
-                : ""
+                : props.item.from === "NC"
+                ? props.item.cafe_icon
+                : undefined
             }
             sx={{ width: 17, height: 17 }}
           />
@@ -92,6 +99,8 @@ const ProductCard = (props) => {
               ? "중고나라"
               : props.item.from === "HM"
               ? "헬로마켓"
+              : props.item.from === "NC"
+              ? props.item.cafe_name
               : ""}
           </Typography>
         </Stack>

@@ -1,12 +1,12 @@
 var express = require("express");
 var router = express.Router();
-let search = require("../module/searchModule");
+let feed = require("../module/feedModule");
 
 /* GET users listing. */
 router.get("/", async function (req, res, next) {
-  const jn = await search.getFeedJoongna();
-  const hm = await search.getFeedHelloMarket();
-  const bj = await search.getFeedBunjang();
+  const jn = await feed.getFeedJoongna();
+  const hm = await feed.getFeedHelloMarket();
+  const bj = await feed.getFeedBunjang();
 
   const result = [...jn, ...hm, ...bj];
 
