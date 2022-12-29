@@ -15,7 +15,7 @@ const SearchList = (props) => {
   const search = async (keyword, page) => {
     setProgress(true);
     const response = await axios.get(
-      `/api/search?keyword=${keyword}&page=${page}`
+      `http://localhost:5000/api/search?keyword=${keyword}&page=${page}`
     );
     setPage((prev) => prev + 1);
     setProgress(false);
