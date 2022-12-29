@@ -16,12 +16,10 @@ const SearchList = (props) => {
   const [products, setProducts] = useState([]);
   const [page, setPage] = useState(1);
 
-  const keyword = props.keyword;
-
   const search = async (keyword, page) => {
     setProgress(true);
     const response = await axios.get(
-      `http://localhost:5000/api/search?keyword=${keyword}&page=${page}`
+      `/api/search?keyword=${keyword}&page=${page}`
     );
     setPage((prevPage) => prevPage + 1);
     setProgress(false);
@@ -30,7 +28,7 @@ const SearchList = (props) => {
 
   useEffect(() => {
     const loadData = async () => {
-      const newProducts = await search(keyword, page);
+      const newProducts = await search(props.keyword, page);
       setProducts((prevProducts) => [...prevProducts, ...newProducts.products]);
       props.setRecommendKeywords(newProducts.keywords);
     };
