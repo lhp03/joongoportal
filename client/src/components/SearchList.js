@@ -12,24 +12,25 @@ import ProductCard from "./ProductCard";
 import axios from "axios";
 
 const SearchList = (props) => {
+  const [progress, setProgress] = useState(false);
+  const [products, setProducts] = useState([]);
+  const [page, setPage] = useState(1);
+
+  const keyword = props.keyword;
+
   const search = async (keyword, page) => {
     setProgress(true);
     const response = await axios.get(
       `http://localhost:5000/api/search?keyword=${keyword}&page=${page}`
     );
-    setPage((prev) => prev + 1);
+    setPage((prevPage) => prevPage + 1);
     setProgress(false);
     return response.data;
   };
 
-  const [progress, setProgress] = useState(false);
-  const [products, setProducts] = useState([]);
-  const [page, setPage] = useState(1);
-
   useEffect(() => {
     const loadData = async () => {
-      const newProducts = await search(props.keyword, page);
-      console.log(newProducts);
+      const newProducts = await search(keyword, page);
       setProducts((prevProducts) => [...prevProducts, ...newProducts.products]);
       props.setRecommendKeywords(newProducts.keywords);
     };
