@@ -1,9 +1,9 @@
-import { Container, Typography } from "@mui/material";
+import { Container, Divider, Typography } from "@mui/material";
 import React from "react";
 import { useSearchParams } from "react-router-dom";
 import PriceBox from "../components/PriceBox";
 import Searchbar from "../components/Searchbar";
-import SearchIcon from "@mui/icons-material/Search";
+import AttachMoneyIcon from "@mui/icons-material/AttachMoney";
 
 const PricePage = () => {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -11,25 +11,31 @@ const PricePage = () => {
 
   return (
     <div align="center">
+      <Container>
+        <Typography align="left" variant="h5" fontWeight="bold">
+          시세 확인
+        </Typography>
+        <Divider sx={{ my: 2 }} />
+      </Container>
       <Searchbar value={keyword} link="price" />
       {keyword != null && keyword != undefined ? (
         <PriceBox keyword={keyword} />
       ) : (
         <Container sx={{ my: 5 }}>
-          <SearchIcon sx={{ fontSize: 200, color: "lightgray" }} />
+          <AttachMoneyIcon sx={{ fontSize: 200, color: "lightgray" }} />
           <Typography
             align="center"
             variant="h3"
             sx={{ color: "lightgray", fontWeight: "bold" }}
           >
-            중고 상품을
+            중고 상품의
           </Typography>
           <Typography
             align="center"
             variant="h3"
             sx={{ color: "lightgray", fontWeight: "bold" }}
           >
-            통합 검색해보세요.
+            가격을 확인해보세요.
           </Typography>
         </Container>
       )}

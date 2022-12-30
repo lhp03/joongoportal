@@ -4,7 +4,7 @@ import Searchbar from "../components/Searchbar";
 import RecommendKeyowordList from "../components/RecommendKeyowordList";
 import SearchList from "../components/SearchList";
 import { Container } from "@mui/system";
-import { Typography } from "@mui/material";
+import { Divider, Typography } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
 
 const SearchPage = () => {
@@ -15,6 +15,12 @@ const SearchPage = () => {
 
   return (
     <div align="center">
+      <Container>
+        <Typography align="left" variant="h5" fontWeight="bold">
+          상품 검색
+        </Typography>
+        <Divider sx={{ my: 2 }} />
+      </Container>
       <Searchbar value={keyword} link="search" />
       {keyword !== null && keyword !== undefined ? (
         <>
