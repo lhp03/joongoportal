@@ -1,6 +1,4 @@
 const axios = require("axios");
-const cheerio = require("cheerio");
-const iconv = require("iconv-lite");
 
 const getRequestId = () => {
   const date = new Date();

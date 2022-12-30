@@ -26,7 +26,7 @@ const Feed = () => {
   }, []);
 
   return (
-    <Container sx={{ my: 2, position: "relative" }}>
+    <Container sx={{ my: 2 }}>
       <Typography align="left" variant="h5" fontWeight="bold">
         인기 상품
       </Typography>
@@ -34,8 +34,6 @@ const Feed = () => {
       <Backdrop
         sx={{
           color: "#fff",
-          position: "absolute",
-          zIndex: (theme) => theme.zIndex.drawer - 1,
         }}
         open={progress}
       >

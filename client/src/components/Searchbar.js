@@ -7,7 +7,7 @@ const Searchbar = (props) => {
   const [keyword, setKeyword] = useState(props.value);
 
   return (
-    <Container maxWidth="lg" sx={{ mt: 7 }}>
+    <Container maxWidth="lg" sx={{ mt: 3 }}>
       <TextField
         label="검색어"
         variant="outlined"
@@ -19,7 +19,7 @@ const Searchbar = (props) => {
         defaultValue={props.value}
         onKeyDown={(e) => {
           if (e.key === "Enter") {
-            window.location.replace(`/search/${keyword}`);
+            window.location.replace(`/${props.link}?keyword=${keyword}`);
           }
         }}
       />
@@ -28,7 +28,7 @@ const Searchbar = (props) => {
         size="large"
         sx={{ width: "25%", ml: "3%" }}
         onClick={() => {
-          window.location.replace(`/search/${keyword}`);
+          window.location.replace(`/${props.link}?keyword=${keyword}`);
         }}
       >
         검색

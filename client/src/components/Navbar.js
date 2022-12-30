@@ -1,30 +1,42 @@
-import { AppBar, Button, IconButton, Toolbar, Typography } from "@mui/material";
-import MenuIcon from "@mui/icons-material/Menu";
-import { Box } from "@mui/system";
+import { AppBar, Button, Container, Toolbar, Typography } from "@mui/material";
 import React from "react";
 
 const Navbar = () => {
   return (
-    <Box sx={{ flexGrow: 1, my: 2 }}>
+    <Container sx={{ flexGrow: 1, my: 2, p: 0, mt: 0 }}>
       <AppBar position="static">
         <Toolbar>
-          <IconButton
-            size="large"
-            edge="start"
-            color="inherit"
-            aria-label="menu"
-            sx={{ mr: 2 }}
+          <Typography
+            variant="h6"
+            component="div"
+            sx={{ flexGrow: 1, fontWeight: "bold", cursor: "pointer", ml: 2 }}
+            onClick={() => {
+              window.location.replace("/");
+            }}
           >
-            <MenuIcon />
-          </IconButton>
-          <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
             중고모아
           </Typography>
-          <Button color="inherit">검색</Button>
-          <Button color="inherit">시세확인</Button>
+          <Button
+            color="inherit"
+            sx={{ fontWeight: "bold" }}
+            onClick={() => {
+              window.location.replace("/search");
+            }}
+          >
+            검색
+          </Button>
+          <Button
+            color="inherit"
+            sx={{ fontWeight: "bold" }}
+            onClick={() => {
+              window.location.replace("/price");
+            }}
+          >
+            시세확인
+          </Button>
         </Toolbar>
       </AppBar>
-    </Box>
+    </Container>
   );
 };
 

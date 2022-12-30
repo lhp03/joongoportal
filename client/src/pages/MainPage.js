@@ -6,7 +6,6 @@ import Searchbar from "../components/Searchbar";
 const MainPage = () => {
   return (
     <Container align="center">
-      <Searchbar />
       <Feed />
     </Container>
   );

@@ -8,7 +8,7 @@ var cors = require("cors");
 //router
 var searchRouter = require("./routes/search");
 var feedRouter = require("./routes/feed");
-
+var priceRouter = require("./routes/price");
 /*
 var searchJoongonaraRouter = require("./routes/searchJoonggonara");
 var searchBunjangRouter = require("./routes/searchbunjang");
@@ -27,6 +27,7 @@ app.use(express.static(path.join(__dirname, "public")));
 
 app.use("/api/search", searchRouter);
 app.use("/api/feed", feedRouter);
+app.use("/api/price", priceRouter);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
