@@ -15,12 +15,21 @@ const getRequestId = () => {
   );
 };
 
-const getBunjang = async (keyword, page = 0) => {
+const getBunjang = async (keyword, page = 0, order = "DATE_DESC") => {
+  //order score, date, price_asc, price_desc
   keyword = encodeURI(keyword);
+  order =
+    order === "DATE_DESC"
+      ? "date"
+      : order === "COST_ASC"
+      ? "price_asc"
+      : order === "DATE_DESC"
+      ? "price_desc"
+      : "score";
 
   const request_id = getRequestId();
 
-  const search_url = `https://api.bunjang.co.kr/api/1/find_v2.json?q=${keyword}&order=score&page=${page}&request_id=${request_id}&stat_device=w&n=30&stat_category_required=1&req_ref=search&version=4`;
+  const search_url = `https://api.bunjang.co.kr/api/1/find_v2.json?q=${keyword}&order=${order}&page=${page}&request_id=${request_id}&stat_device=w&n=30&stat_category_required=1&req_ref=search&version=4`;
   const response = await axios.get(search_url);
 
   let products = [];
@@ -58,15 +67,24 @@ const getBunjang = async (keyword, page = 0) => {
   return products;
 };
 
-const getHelloMarket = async (keyword, page = 1) => {
+const getHelloMarket = async (keyword, page = 1, order = "DATE_DESC") => {
   const base_url = "https://www.hellomarket.com";
   keyword = encodeURI(keyword);
 
-  const search_url = `${base_url}/api/search/items?q=${keyword}&page=${page}&startTime=${new Date().valueOf()}`;
+  order =
+    order === "COST_ASC"
+      ? "lowprice"
+      : order === "COST_DESC"
+      ? "highprice"
+      : "current";
+
+  //&sort=current -> 최근 등록순
+  //&sort=lowprice -> 낮은 가격순
+  //&sort=highprice -> 높은 가격순
+  const search_url = `${base_url}/api/search/items?q=${keyword}&page=${page}&startTime=${new Date().valueOf()}&sort=${order}`;
   const response = await axios.get(search_url);
 
   let products = [];
-
   //state: ForSale: 판매중
   //used: SecondHand : 사용감이 있는 깨끗한 상품, AsNew: 거의 새상품, NotUsed 새 상품(미개봉), SomeFlaws: 사용흔적이 많이 있는 상품
 
@@ -97,9 +115,13 @@ const getHelloMarket = async (keyword, page = 1) => {
   return products;
 };
 
-const getNaver = async (keyword, page = 1) => {
+const getNaver = async (keyword, page = 1, order = "DEFAULT") => {
+  //&searchOrderParamType=DATE_DESC
+  //COST_ASC 낮은 가격
+  //COST_DESC 높은 가격
+
   keyword = encodeURI(keyword);
-  const api_url = `https://apis.naver.com/cafe-web/cafe-search-api/v4.0/trade-search/all?query=${keyword}&page=${page}&size=30&recommendKeyword=true&searchOrderParamType=DEFAULT`;
+  const api_url = `https://apis.naver.com/cafe-web/cafe-search-api/v4.0/trade-search/all?query=${keyword}&page=${page}&size=30&recommendKeyword=true&searchOrderParamType=${order}`;
 
   const response = await axios.get(api_url, {
     headers: {

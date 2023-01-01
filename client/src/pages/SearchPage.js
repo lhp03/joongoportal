@@ -12,9 +12,10 @@ const SearchPage = () => {
 
   const [searchParams, setSearchParams] = useSearchParams();
   const keyword = searchParams.get("keyword");
+  const order = searchParams.get("order");
 
   return (
-    <div align="center">
+    <Container align="center">
       <Container>
         <Typography align="left" variant="h5" fontWeight="bold">
           상품 검색
@@ -29,6 +30,7 @@ const SearchPage = () => {
           )}
           <SearchList
             keyword={keyword}
+            order={order}
             setRecommendKeywords={setRecommendKeywords}
           />
         </>
@@ -51,7 +53,7 @@ const SearchPage = () => {
           </Typography>
         </Container>
       )}
-    </div>
+    </Container>
   );
 };
 

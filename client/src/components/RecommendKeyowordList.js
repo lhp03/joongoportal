@@ -42,7 +42,9 @@ const RecommendKeyowordList = (props) => {
                     },
                   }}
                   onClick={() => {
-                    window.location.replace(`/search?keyword=${element}`);
+                    window.location.replace(
+                      `/search?keyword=${element}&order=DATE_DESC`
+                    );
                   }}
                 >
                   {element}

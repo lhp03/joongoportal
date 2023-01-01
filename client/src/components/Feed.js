@@ -10,7 +10,7 @@ import axios from "axios";
 import React, { useEffect, useState } from "react";
 import ProductCard from "./ProductCard";
 
-const Feed = () => {
+const Feed = (props) => {
   const [products, setProducts] = useState([]);
   const [progress, setProgress] = useState(false);
 
@@ -30,6 +30,7 @@ const Feed = () => {
       <Typography align="left" variant="h5" fontWeight="bold">
         인기 상품
       </Typography>
+
       <Divider sx={{ my: 2 }} />
       <Backdrop
         sx={{

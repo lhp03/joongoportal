@@ -19,7 +19,9 @@ const Searchbar = (props) => {
         defaultValue={props.value}
         onKeyDown={(e) => {
           if (e.key === "Enter") {
-            window.location.replace(`/${props.link}?keyword=${keyword}`);
+            window.location.replace(
+              `/${props.link}?keyword=${keyword}&order=DATE_DESC`
+            );
           }
         }}
       />
@@ -28,7 +30,9 @@ const Searchbar = (props) => {
         size="large"
         sx={{ width: "25%", ml: "3%" }}
         onClick={() => {
-          window.location.replace(`/${props.link}?keyword=${keyword}`);
+          window.location.replace(
+            `/${props.link}?keyword=${keyword}&order=DATE_DESC`
+          );
         }}
       >
         검색

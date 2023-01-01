@@ -12,6 +12,11 @@ function App() {
     typography: {
       fontFamily: "Spoqa Han Sans Neo",
     },
+    palette: {
+      primary: {
+        main: "#512da8",
+      },
+    },
   });
   VisitTracker();
   return (

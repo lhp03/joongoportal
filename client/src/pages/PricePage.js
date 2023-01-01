@@ -4,13 +4,14 @@ import { useSearchParams } from "react-router-dom";
 import PriceBox from "../components/PriceBox";
 import Searchbar from "../components/Searchbar";
 import AttachMoneyIcon from "@mui/icons-material/AttachMoney";
+import RelatedCerousel from "../components/RelatedCerousel";
 
 const PricePage = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   const keyword = searchParams.get("keyword");
 
   return (
-    <div align="center">
+    <Container align="center">
       <Container>
         <Typography align="left" variant="h5" fontWeight="bold">
           시세 확인
@@ -39,7 +40,7 @@ const PricePage = () => {
           </Typography>
         </Container>
       )}
-    </div>
+    </Container>
   );
 };
 
