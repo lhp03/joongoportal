@@ -42,7 +42,15 @@ const Feed = (props) => {
       </Backdrop>
       <Grid container>
         {products.map((product, index) => (
-          <Grid key={`feed_${index}`} item xs={6} sm={4} lg={3}>
+          <Grid
+            align="center"
+            key={`feed_${index}`}
+            item
+            xs={12}
+            sm={6}
+            md={4}
+            lg={3}
+          >
             <ProductCard item={product} />
           </Grid>
         ))}

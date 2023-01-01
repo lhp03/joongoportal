@@ -99,7 +99,15 @@ const SearchList = (props) => {
       </Backdrop>
       <Grid container>
         {products.map((product, index) => (
-          <Grid key={`search_${index}`} item xs={6} sm={4} lg={3}>
+          <Grid
+            align="center"
+            key={`search_${index}`}
+            item
+            xs={12}
+            sm={6}
+            md={4}
+            lg={3}
+          >
             <ProductCard item={product} sx={{ display: "flex" }} />
           </Grid>
         ))}
