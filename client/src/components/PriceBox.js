@@ -22,19 +22,6 @@ const PriceBox = (props) => {
 
   const labels = ["3개월 전", "2개월 전", "1개월 전", "최근 한달"];
 
-  const data = {
-    labels,
-    datasets: [
-      {
-        type: "line",
-        label: "평균 거래가",
-        data: [734250, 889681, 703330, 734250],
-        borderColor: "rgb(81, 45, 168)",
-        backgroundColor: "rgb(81, 45, 168)",
-      },
-    ],
-  };
-
   useEffect(() => {
     const loadData = async () => {
       setProgress(true);
@@ -61,26 +48,41 @@ const PriceBox = (props) => {
       >
         <CircularProgress sx={{ color: "#e0e0e0" }} />
       </Backdrop>
-      <Line
-        option={{ responsive: true }}
-        data={{
-          labels,
-          datasets: [
-            {
-              type: "line",
-              label: "평균 거래가",
-              data: [
-                price.fourMonathAgo.price,
-                price.threeMonthAgo.price,
-                price.twoMonthAgo.price,
-                price.aMonthAgo.price,
-              ],
-              borderColor: "rgb(81, 45, 168)",
-              backgroundColor: "rgb(81, 45, 168)",
-            },
-          ],
-        }}
-      />
+      <Container sx={{ my: 4 }}>
+        <Line
+          option={{ responsive: true }}
+          data={{
+            labels,
+            datasets: [
+              {
+                type: "line",
+                label: "평균 거래가",
+                data: [
+                  Math.floor(
+                    price.fourMonathAgo.price / price.fourMonathAgo.num
+                  ),
+                  Math.floor(
+                    price.threeMonthAgo.price / price.threeMonthAgo.num
+                  ),
+                  Math.floor(price.twoMonthAgo.price / price.twoMonthAgo.num),
+                  Math.floor(price.aMonthAgo.price / price.aMonthAgo.num),
+                ],
+                borderColor: "rgb(81, 45, 168)",
+                backgroundColor: "rgb(81, 45, 168)",
+              },
+            ],
+          }}
+        />
+        <Typography variant="h6">
+          최근 <strong>'{props.keyword}'</strong>의 평균 거래 금액은
+        </Typography>
+        <Typography
+          variant="h4"
+          sx={{ fontWeight: "bold", color: "primary.main" }}
+        >{`${Math.floor(price.aMonthAgo.price / price.aMonthAgo.num)
+          .toString()
+          .replace(/\B(?=(\d{3})+(?!\d))/g, ",")}원`}</Typography>
+      </Container>
     </Container>
   );
 };
