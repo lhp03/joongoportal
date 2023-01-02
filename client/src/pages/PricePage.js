@@ -5,6 +5,8 @@ import PriceBox from "../components/PriceBox";
 import Searchbar from "../components/Searchbar";
 import AttachMoneyIcon from "@mui/icons-material/AttachMoney";
 import RelatedCerousel from "../components/RelatedCerousel";
+import Chart from "chart.js";
+import { Line } from "react-chartjs-2";
 
 const PricePage = () => {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -19,8 +21,11 @@ const PricePage = () => {
         <Divider sx={{ my: 2 }} />
       </Container>
       <Searchbar value={keyword} link="price" />
-      {keyword != null && keyword != undefined ? (
-        <PriceBox keyword={keyword} />
+      {keyword !== null && keyword !== undefined ? (
+        <>
+          <PriceBox keyword={keyword} />
+          <RelatedCerousel keyword={keyword} />
+        </>
       ) : (
         <Container sx={{ my: 5 }}>
           <AttachMoneyIcon sx={{ fontSize: 200, color: "lightgray" }} />

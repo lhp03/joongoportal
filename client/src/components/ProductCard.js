@@ -30,7 +30,7 @@ const ProductCard = (props) => {
     <Card
       elevation={2}
       sx={{
-        maxWidth: 250,
+        maxWidth: 300,
         maxHeight: 450,
         px: 2,
         py: 1,
@@ -59,11 +59,68 @@ const ProductCard = (props) => {
       <CardContent sx={{ p: 0, py: 1 }}>
         <Stack direction="row" spacing={1} my={1}>
           {props.item.state === "RESERVED" ? (
-            <Chip label="예약중" color="warning" size="small" />
+            <Chip
+              label="예약중"
+              size="small"
+              sx={{
+                backgroundColor: "#ffeb3b",
+                color: "white",
+                fontWeight: "bold",
+              }}
+            />
           ) : props.item.state === "COMPLETED" ? (
-            <Chip label="판매완료" color="error" size="small" />
+            <Chip
+              label="판매완료"
+              size="small"
+              sx={{
+                backgroundColor: "#f44336",
+                color: "white",
+                fontWeight: "bold",
+              }}
+            />
           ) : (
-            <Chip label="판매중" color="success" size="small" />
+            <Chip
+              label="판매중"
+              size="small"
+              sx={{
+                backgroundColor: "#4caf50",
+                color: "white",
+                fontWeight: "bold",
+              }}
+            />
+          )}
+          {props.item.used === "NEW" ? (
+            <Chip
+              label="새상품"
+              size="small"
+              sx={{
+                backgroundColor: "#2196f3",
+                color: "white",
+                fontWeight: "bold",
+              }}
+            />
+          ) : props.item.used === "ALMOST_NEW" ? (
+            <Chip
+              label="거의 새것"
+              size="small"
+              sx={{
+                backgroundColor: "#009688",
+                color: "white",
+                fontWeight: "bold",
+              }}
+            />
+          ) : props.item.used === "USED" ? (
+            <Chip
+              label="중고"
+              size="small"
+              sx={{
+                backgroundColor: "#ff9800",
+                color: "white",
+                fontWeight: "bold",
+              }}
+            />
+          ) : (
+            <></>
           )}
         </Stack>
         <Typography noWrap align="left" variant="body1">
@@ -104,7 +161,6 @@ const ProductCard = (props) => {
               : ""}
           </Typography>
         </Stack>
-
         <Typography noWrap variant="body2" align="right">
           {props.item ? getTimeDiff(props.item.date) : "date"}
         </Typography>
