@@ -14,6 +14,10 @@ const SearchPage = () => {
   const keyword = searchParams.get("keyword");
   const order = searchParams.get("order");
 
+  const htmlTitle = document.querySelector("title");
+  htmlTitle.innerText =
+    keyword !== null && keyword !== undefined ? `찾기 - ${keyword}` : "찾기";
+
   return (
     <Container align="center">
       <Container>

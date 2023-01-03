@@ -5,12 +5,14 @@ import PriceBox from "../components/PriceBox";
 import Searchbar from "../components/Searchbar";
 import AttachMoneyIcon from "@mui/icons-material/AttachMoney";
 import RelatedCerousel from "../components/RelatedCerousel";
-import Chart from "chart.js";
-import { Line } from "react-chartjs-2";
 
 const PricePage = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   const keyword = searchParams.get("keyword");
+
+  const htmlTitle = document.querySelector("title");
+  htmlTitle.innerText =
+    keyword !== null && keyword !== undefined ? `가격 - ${keyword}` : "가격";
 
   return (
     <Container align="center">

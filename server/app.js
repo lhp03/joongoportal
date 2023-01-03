@@ -9,12 +9,6 @@ var cors = require("cors");
 var searchRouter = require("./routes/search");
 var feedRouter = require("./routes/feed");
 var priceRouter = require("./routes/price");
-/*
-var searchJoongonaraRouter = require("./routes/searchJoonggonara");
-var searchBunjangRouter = require("./routes/searchbunjang");
-var searchHelloMarketRouter = require("./routes/searchhello");
-var searchNaverRouter = require("./routes/searchNaver");
-*/
 
 var app = express();
 
